@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 5 Jun 2024, 1:25:02 PM
+ *  Last update: 2 Jul 2024, 8:22:58 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -83,7 +83,13 @@ function createSongCard(title, artist) {
     card.className = "card";
     card.innerHTML =
         `<h3>${title}</h3>
-        <p class="text-muted">${artist}</p>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <p class="text-muted">${artist}</p>
+            <div style="display: flex; flex-direction: row; gap: 10px;">
+                <img src="images/like.png" alt="like button" style="height: 20px;" />
+                <p>8</p>
+            </div>
+        </div>
         <button class="card-close">X</button>`;
     
     // add a close handler to the button to remove the card from the DOM

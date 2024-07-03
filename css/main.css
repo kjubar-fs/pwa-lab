@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 25 May 2024, 1:17:43 PM
+ *  Last update: 2 Jul 2024, 8:14:04 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -174,7 +174,7 @@ label.invalid::after {
     flex-direction: column;
     gap: 10px;
     width: 70%;
-    padding: 10px 35px 10px 10px;
+    padding: 10px;
 
     border-radius: 5px;
     
