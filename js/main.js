@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 10:50:35 AM
+ *  Last update: 4 Jul 2024, 11:24:06 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -15,6 +15,11 @@ if ("serviceWorker" in navigator) {
 
 // setup Firebase connections
 initFirebaseAndDB();
+
+// get the initial song list
+songDB.getAll().then(displaySongs).catch((err) => {
+    displayError("Error getting song list:", err);
+});
 
 let idCounter = 0;
 let songLikes = {};
@@ -62,8 +67,10 @@ function addSong(event) {
     }
     if (hasError) return;
 
+    // TODO: add song to database
+
     // if we get here, we can make a card for the song in the playlist
-    createSongCard(title, artist);
+    createSongCard(crypto.randomUUID(), title, artist, 0);
 
     // clear the inputs to make the workflow faster
     titleInput.value = "";
@@ -80,11 +87,14 @@ getElID("addSong").addEventListener("click", addSong);
 /**
  * Given information about a song, create a card for it
  * and add it to the playlist in the DOM
+ * @param {string} id song ID
  * @param {string} title song title
  * @param {string} artist song artist
+ * @param {number} likes number of song likes
  */
-function createSongCard(title, artist) {
+function createSongCard(id, title, artist, likes) {
     // set up the initial song likes
+    // TODO: replace ID and likes with params provided by DB
     const songID = `song${idCounter}`;
     songLikes[songID] = 0;
 
@@ -121,6 +131,8 @@ function createSongCard(title, artist) {
     likeBtn.addEventListener("click", () => {
         songLikes[songID]++;
         likeCounter.innerText = songLikes[songID];
+
+        // TODO: actually increment in database
     });
 
     // add to likes div
@@ -129,10 +141,12 @@ function createSongCard(title, artist) {
     likesDiv.appendChild(likeBtn);
     
     // add a close handler to the button to remove the card from the DOM
-    const closeBtn = card.lastChild;
+    const deleteBtn = card.lastChild;
     const playlist = getElID("playlistContainer");
-    closeBtn.addEventListener("click", () => {
+    deleteBtn.addEventListener("click", () => {
         playlist.removeChild(card);
+
+        // TODO: remove song from database
     });
     
     // append card to the playlist
@@ -140,6 +154,17 @@ function createSongCard(title, artist) {
 
     // increment number of songs
     idCounter++;
+}
+
+/**
+ * Renders cards for the given list of songs
+ * @param {any[]} songList list of songs to display
+ */
+function displaySongs(songList) {
+    for (let song of songList) {
+        console.log(song);
+        createSongCard(song.id, song.title, song.artist, song.likes);
+    }
 }
 
 /**
@@ -181,8 +206,8 @@ function initFirebaseAndDB() {
 
 /**
  * Show an error on the page, or hide the display if an empty title is provided
- * @param {string | null} title Error title, or ""/null to hide
- * @param {string | null} errMsg Error to display
+ * @param {(string | null)} title Error title, or ""/null to hide
+ * @param {(string | null)} errMsg Error to display
  */
 function displayError(title, errMsg) {
     const errorsElem = getElID("errors");
