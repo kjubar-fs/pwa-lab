@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 2 Jul 2024, 8:38:09 PM
+ *  Last update: 4 Jul 2024, 9:59:21 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -15,6 +15,24 @@
 
 /*** base and mobile-specific styles ***/
 
+/* colors and page-wide styles */
+:root {
+    --bg-dark: #0A0927;
+    --accent: #FAB989;
+
+    --mid-gray: #666;
+    --light-gray: #AAA;
+    --error: #C00;
+}
+
+.text-muted {
+    color: var(--mid-gray);
+}
+
+.hidden {
+    display: none !important;   /* use !important here to override ID styles */
+}
+
 /* page layout */
 body {
     display: flex;
@@ -24,7 +42,7 @@ body {
     background-image: url("../images/background.webp");
     background-position: center top;
     background-repeat: no-repeat;
-    background-color: #0A0927;
+    background-color: var(--bg-dark);
 
     font-family: 'Audiowide', sans-serif;
     font-size: 1.25em;
@@ -38,13 +56,36 @@ header {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    padding: 40px 0;
+    padding: 40px 0 20px 0;
+}
+
+#errors {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    max-width: 90%;
+    margin: auto;
+    padding: 12px;
+    
+    border-radius: 10px;
+
+    font-size: 0.9em;
+    text-align: left;
+    color: var(--bg-dark);
+
+    background-color: white;
+}
+
+#errTitle {
+    font-weight: bold;
+    color: var(--error);
 }
 
 main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    padding-top: 20px;
 }
 
 #addSection {
@@ -67,15 +108,11 @@ h1, h2 {
 }
 
 h1, h2, label {
-    text-shadow: 1px 2px 4px #666;
+    text-shadow: 1px 2px 4px var(--mid-gray);
 }
 
 h2 {
     padding-bottom: 20px;
-}
-
-.text-muted {
-    color: #555;
 }
 
 #logo {
@@ -104,14 +141,14 @@ input {
 }
 input:not([type="submit"]):focus {
     outline: none;
-    box-shadow: inset 2px 2px 6px #AAA;
+    box-shadow: inset 2px 2px 6px var(--light-gray);
 }
 
 input[type="submit"] {
     width: 25%;
     margin-top: 20px;
 
-    box-shadow: 1px 2px 4px #666;
+    box-shadow: 1px 2px 4px var(--mid-gray);
 
     font-family: 'Audiowide', sans-serif;
 }
@@ -123,7 +160,7 @@ input[type="submit"]:active {
 }
 
 input[type="submit"]:focus, button:focus {
-    outline-color: #FAB989;
+    outline-color: var(--accent);
 }
 
 label {
@@ -144,10 +181,10 @@ label::after {
 
     border-radius: 5px;
     
-    box-shadow: 1px 2px 4px #666;
+    box-shadow: 1px 2px 4px var(--mid-gray);
 
     font-size: 0.75em;
-    color: red;
+    color: var(--error);
     text-shadow: none;
 
     background-color: white;
@@ -178,10 +215,10 @@ label.invalid::after {
 
     border-radius: 5px;
     
-    box-shadow: 1px 2px 4px #666;
+    box-shadow: 1px 2px 4px var(--mid-gray);
 
     text-align: left;
-    color: #0A0927;
+    color: var(--bg-dark);
 
     background-color: white;
 }
