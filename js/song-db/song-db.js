@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 4 Jul 2024, 9:30:51 AM
- *  Last update: 4 Jul 2024, 11:08:25 AM
+ *  Last update: 4 Jul 2024, 11:11:22 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import {
@@ -58,6 +58,7 @@ class SongDB {
             const song = {
                 title,
                 artist,
+                likes: 0,   // default to 0 likes
             }
 
             // get collection for songs
