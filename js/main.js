@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 11:54:04 AM
+ *  Last update: 4 Jul 2024, 11:58:29 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -160,9 +160,17 @@ function createSongCard(id, title, artist, likes) {
     const deleteBtn = card.lastChild;
     const playlist = getElID("playlistContainer");
     deleteBtn.addEventListener("click", () => {
-        playlist.removeChild(card);
+        if (confirm(`Are you sure you wish to delete ${title}?`)) {
+            songDB.delete(id).then(() => {
+                // remove the card from the playlist
+                playlist.removeChild(card);
 
-        // TODO: remove song from database
+                // hide any errors
+                displayError("");
+            }).catch((err) => {
+                displayError(`Error deleting ${title}:`, err);
+            });
+        }
     });
     
     // append card to the playlist
