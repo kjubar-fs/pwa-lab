@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 4 Jul 2024, 9:30:51 AM
- *  Last update: 4 Jul 2024, 11:32:37 AM
+ *  Last update: 4 Jul 2024, 11:50:08 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import {
@@ -104,26 +104,22 @@ class SongDB {
     }
 
     /**
-     * Given a song object, update its values in the database
-     * @param {any} updateSong updated song data
+     * Given a song ID and data object, update its values in the database
+     * @param {string} id ID of song to update
+     * @param {any} updatedSong updated song data
      * @returns a Promise indicating if the operation was successful
      */
-    update(updateSong) {
+    update(id, updatedSong) {
         return new Promise((resolve, reject) => {
             if (!this.isAvailable) {
                 reject("Database not opened.");
             }
 
             // get a reference to the song document to update
-            const docRef = doc(this.db, SONGS_COLL, updateSong.id);
-
-            // create a new data object that doesn't contain the key
-            // ideally we'd use a class here that does this for us, but I'm lazy
-            const newData = { ...updateSong };
-            delete newData.id;
+            const docRef = doc(this.db, SONGS_COLL, id);
 
             // update the doc in the collection
-            updateDoc(docRef, newData).then(() => {
+            updateDoc(docRef, updatedSong).then(() => {
                 resolve();
             }).catch((err) => {
                 reject(err);
