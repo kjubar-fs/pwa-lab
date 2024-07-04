@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 11:58:29 AM
+ *  Last update: 4 Jul 2024, 12:08:36 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -13,11 +13,14 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
 }
 
+// TODO: add offline mode detection to display a message and disable the form,
+//       and check when we return online to refresh the list
+
 // setup Firebase connections
 initFirebaseAndDB();
 
 // get the initial song list
-// TODO: make the list refreshing reactive to any DB changes,
+// TODO: make the list refresh reactively to any DB changes,
 //       regardless of where they come from (this app or outside)
 songDB.getAll().then(displaySongs).catch((err) => {
     displayError("Error getting song list:", err);
@@ -104,6 +107,7 @@ function createSongCard(id, title, artist, likes) {
     const card = document.createElement("li");
     card.id = id;
     card.className = "card";
+    // TODO: make the header a link to Spotify using an API
     card.innerHTML =
         `<h3>${title}</h3>
         <div class="song-details">
