@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 12:08:36 PM
+ *  Last update: 4 Jul 2024, 12:15:34 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -160,10 +160,11 @@ function createSongCard(id, title, artist, likes) {
     likesDiv.appendChild(likeCounter);
     likesDiv.appendChild(likeBtn);
     
-    // add a close handler to the button to remove the card from the DOM
+    // add a delete handler to the button to remove the card from the DOM
     const deleteBtn = card.lastChild;
     const playlist = getElID("playlistContainer");
     deleteBtn.addEventListener("click", () => {
+        // TODO: make a custom modal for confirmation
         if (confirm(`Are you sure you wish to delete ${title}?`)) {
             songDB.delete(id).then(() => {
                 // remove the card from the playlist
