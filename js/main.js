@@ -1,14 +1,20 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 9:20:53 AM
+ *  Last update: 4 Jul 2024, 10:50:35 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import songDB from "./song-db/song-db.js";
 
 // register the service worker
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
 }
+
+// setup Firebase connections
+initFirebaseAndDB();
 
 let idCounter = 0;
 let songLikes = {};
@@ -144,4 +150,47 @@ function createSongCard(title, artist) {
  */
 function getElID(id) {
     return document.getElementById(id);
+}
+
+function initFirebaseAndDB() {
+    // initialize Firebase
+    let app;
+    try {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxYESDPqFHcUs5tIGZ2yiJiD-dX_fg0-k",
+            authDomain: "info6128-1207020.firebaseapp.com",
+            projectId: "info6128-1207020",
+            storageBucket: "info6128-1207020.appspot.com",
+            messagingSenderId: "166483613685",
+            appId: "1:166483613685:web:ecd87a7e7f7fc2ff5f72bc"
+        };
+        app = initializeApp(firebaseConfig);
+        displayError("");
+    } catch(err) {
+        displayError("Error connecting to Firebase:", err);
+        return;
+    }
+
+    // initialize DB
+    songDB.open(app)
+        .then(() => { displayError(""); })
+        .catch((err) => {
+            displayError("Error opening database:", err);
+        });
+}
+
+/**
+ * Show an error on the page, or hide the display if an empty title is provided
+ * @param {string | null} title Error title, or ""/null to hide
+ * @param {string | null} errMsg Error to display
+ */
+function displayError(title, errMsg) {
+    const errorsElem = getElID("errors");
+    if (title) {
+        getElID("errTitle").innerText = title;
+        getElID("errMsg").innerText = errMsg;
+        errorsElem.classList.remove("hidden");
+    } else {
+        errorsElem.classList.add("hidden");
+    }
 }
