@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 4 Jul 2024, 11:39:43 AM
+ *  Last update: 4 Jul 2024, 12:03:15 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -249,6 +249,14 @@ label.invalid::after {
     top: 7px;
     right: 10px;
     padding: 0 4px;
+
+    border-radius: 2px;
+
+    color: var(--error);
+}
+
+.card > .card-close:active {
+    box-shadow: inset 1px 2px 4px var(--light-gray);
 }
 
 button.card-close {
