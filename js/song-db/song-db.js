@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 4 Jul 2024, 9:30:51 AM
- *  Last update: 4 Jul 2024, 11:11:22 AM
+ *  Last update: 4 Jul 2024, 11:32:37 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import {
@@ -44,7 +44,7 @@ class SongDB {
      * Adds a new song to the database
      * @param {string} title song title
      * @param {string} artist song artist
-     * @returns a Promise indicating if the operation was successful
+     * @returns a Promise that resolves to the doc returned from addDoc
      */
     add(title, artist) {
         return new Promise((resolve, reject) => {
@@ -65,8 +65,8 @@ class SongDB {
             const coll = collection(this.db, SONGS_COLL);
 
             // add song to collection
-            addDoc(coll, song).then(() => {
-                resolve();
+            addDoc(coll, song).then((doc) => {
+                resolve(doc);
             }).catch((err) => {
                 reject(err);
             });

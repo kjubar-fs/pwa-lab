@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 11:24:06 AM
+ *  Last update: 4 Jul 2024, 11:37:53 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -20,9 +20,6 @@ initFirebaseAndDB();
 songDB.getAll().then(displaySongs).catch((err) => {
     displayError("Error getting song list:", err);
 });
-
-let idCounter = 0;
-let songLikes = {};
 
 // create and attach click handler for submit button
 /**
@@ -68,19 +65,25 @@ function addSong(event) {
     if (hasError) return;
 
     // TODO: add song to database
+    songDB.add(title, artist).then((song) => {
+        // make a card for the song in the playlist
+        createSongCard(song.id, title, artist, 0);
+    
+        // clear the inputs to make the workflow faster
+        titleInput.value = "";
+        artistInput.value = "";
+    
+        // if focus is on the artist field (the user hit enter to submit), move focus to the title field
+        // keeps keyboard-only workflows easy
+        if (document.activeElement.id === "artistName") {
+            titleInput.focus();
+        }
 
-    // if we get here, we can make a card for the song in the playlist
-    createSongCard(crypto.randomUUID(), title, artist, 0);
-
-    // clear the inputs to make the workflow faster
-    titleInput.value = "";
-    artistInput.value = "";
-
-    // if focus is on the artist field (the user hit enter to submit), move focus to the title field
-    // keeps keyboard-only workflows easy
-    if (document.activeElement.id === "artistName") {
-        titleInput.focus();
-    }
+        // clear errors
+        displayError("");
+    }).catch((err) => {
+        displayError("Error adding song:", err);
+    });
 }
 getElID("addSong").addEventListener("click", addSong);
 
@@ -93,14 +96,9 @@ getElID("addSong").addEventListener("click", addSong);
  * @param {number} likes number of song likes
  */
 function createSongCard(id, title, artist, likes) {
-    // set up the initial song likes
-    // TODO: replace ID and likes with params provided by DB
-    const songID = `song${idCounter}`;
-    songLikes[songID] = 0;
-
     // create <li> element for the card
     const card = document.createElement("li");
-    card.id = songID;
+    card.id = id;
     card.className = "card";
     card.innerHTML =
         `<h3>${title}</h3>
@@ -112,7 +110,7 @@ function createSongCard(id, title, artist, likes) {
     
     // add the like button and counter to the song card
     const likeBtn = document.createElement("img");
-    likeBtn.id = `${songID}LikeBtn`;
+    likeBtn.id = `${id}LikeBtn`;
     likeBtn.src = "images/like.png";
     likeBtn.className = "like-icon";
     // mousedown/up to change the icon
@@ -124,14 +122,11 @@ function createSongCard(id, title, artist, likes) {
     });
 
     const likeCounter = document.createElement("p");
-    likeCounter.id = `${songID}Likes`;
-    likeCounter.innerText = songLikes[songID];
+    likeCounter.id = `${id}Likes`;
+    likeCounter.innerText = likes;
 
     // click to increment the counter
     likeBtn.addEventListener("click", () => {
-        songLikes[songID]++;
-        likeCounter.innerText = songLikes[songID];
-
         // TODO: actually increment in database
     });
 
@@ -151,9 +146,6 @@ function createSongCard(id, title, artist, likes) {
     
     // append card to the playlist
     playlist.appendChild(card);
-
-    // increment number of songs
-    idCounter++;
 }
 
 /**
@@ -162,7 +154,6 @@ function createSongCard(id, title, artist, likes) {
  */
 function displaySongs(songList) {
     for (let song of songList) {
-        console.log(song);
         createSongCard(song.id, song.title, song.artist, song.likes);
     }
 }
