@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 11:37:53 AM
+ *  Last update: 4 Jul 2024, 11:54:04 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -17,6 +17,8 @@ if ("serviceWorker" in navigator) {
 initFirebaseAndDB();
 
 // get the initial song list
+// TODO: make the list refreshing reactive to any DB changes,
+//       regardless of where they come from (this app or outside)
 songDB.getAll().then(displaySongs).catch((err) => {
     displayError("Error getting song list:", err);
 });
@@ -64,7 +66,7 @@ function addSong(event) {
     }
     if (hasError) return;
 
-    // TODO: add song to database
+    // TODO: store user's add order to load in the initial order, not by key
     songDB.add(title, artist).then((song) => {
         // make a card for the song in the playlist
         createSongCard(song.id, title, artist, 0);
@@ -86,6 +88,8 @@ function addSong(event) {
     });
 }
 getElID("addSong").addEventListener("click", addSong);
+
+// TODO: add sorting by title, artist, number of likes, and user order
 
 /**
  * Given information about a song, create a card for it
@@ -114,6 +118,8 @@ function createSongCard(id, title, artist, likes) {
     likeBtn.src = "images/like.png";
     likeBtn.className = "like-icon";
     // mousedown/up to change the icon
+    // use anon functions instead of arrow functions here so that
+    // we bind to the HTML element raising the event, not window
     likeBtn.addEventListener("mousedown", function () {
         this.src = "images/like_highlight.png";
     });
@@ -127,7 +133,22 @@ function createSongCard(id, title, artist, likes) {
 
     // click to increment the counter
     likeBtn.addEventListener("click", () => {
-        // TODO: actually increment in database
+        // get the current likes and increment
+        // realistically, this should come from the DB and not our DOM
+        // but for this app it works fine
+        let curLikes = Number(likeCounter.innerText);
+        curLikes++;
+
+        // update in database
+        songDB.update(id, { likes: curLikes }).then(() => {
+            // update counter on screen
+            likeCounter.innerText = curLikes;
+
+            // hide any errors
+            displayError("");
+        }).catch((err) => {
+            displayError("Error liking song:", err);
+        });
     });
 
     // add to likes div
