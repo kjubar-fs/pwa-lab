@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 4 Jul 2024, 9:59:21 AM
+ *  Last update: 4 Jul 2024, 11:38:24 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -221,6 +221,10 @@ label.invalid::after {
     color: var(--bg-dark);
 
     background-color: white;
+}
+
+.card > h3 {
+    margin-right: 25px;
 }
 
 .card > .song-details {
