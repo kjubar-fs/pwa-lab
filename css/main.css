@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 4 Jul 2024, 11:38:24 AM
+ *  Last update: 4 Jul 2024, 11:39:43 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -231,6 +231,7 @@ label.invalid::after {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end;
 }
 
 .card .likes {
