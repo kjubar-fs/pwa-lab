@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 5 Jun 2024, 1:24:13 PM
- *  Last update: 5 Jun 2024, 2:05:47 PM
+ *  Last update: 4 Jul 2024, 11:17:53 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 const version = "1"
@@ -64,7 +64,7 @@ self.addEventListener("fetch", (event) => {
     // only cache things from URLs starting with http
     // this makes us not attempt to cache things like chrome extensions,
     // react devtools, etc.
-    if (event.request.url.startsWith("http")) {
+    if (event.request.url.startsWith("http") && event.request.method === "GET") {
         // a variant of the code given in the demo video using an async IIFE
         // and await instead of .then().catch()
         event.respondWith((async () => {
