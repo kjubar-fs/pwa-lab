@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 2 Jul 2024, 8:22:58 PM
+ *  Last update: 4 Jul 2024, 9:20:53 AM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -11,6 +11,7 @@ if ("serviceWorker" in navigator) {
 }
 
 let idCounter = 0;
+let songLikes = {};
 
 // create and attach click handler for submit button
 /**
@@ -77,30 +78,62 @@ getElID("addSong").addEventListener("click", addSong);
  * @param {string} artist song artist
  */
 function createSongCard(title, artist) {
+    // set up the initial song likes
+    const songID = `song${idCounter}`;
+    songLikes[songID] = 0;
+
     // create <li> element for the card
     const card = document.createElement("li");
-    card.id = `song-${idCounter++}`;    // set unique ID from counter and increment
+    card.id = songID;
     card.className = "card";
     card.innerHTML =
         `<h3>${title}</h3>
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div class="song-details">
             <p class="text-muted">${artist}</p>
-            <div style="display: flex; flex-direction: row; gap: 10px;">
-                <img src="images/like.png" alt="like button" style="height: 20px;" />
-                <p>8</p>
-            </div>
+            <div class="likes"></div>
         </div>
         <button class="card-close">X</button>`;
     
+    // add the like button and counter to the song card
+    const likeBtn = document.createElement("img");
+    likeBtn.id = `${songID}LikeBtn`;
+    likeBtn.src = "images/like.png";
+    likeBtn.className = "like-icon";
+    // mousedown/up to change the icon
+    likeBtn.addEventListener("mousedown", function () {
+        this.src = "images/like_highlight.png";
+    });
+    likeBtn.addEventListener("mouseup", function () {
+        this.src = "images/like.png";
+    });
+
+    const likeCounter = document.createElement("p");
+    likeCounter.id = `${songID}Likes`;
+    likeCounter.innerText = songLikes[songID];
+
+    // click to increment the counter
+    likeBtn.addEventListener("click", () => {
+        songLikes[songID]++;
+        likeCounter.innerText = songLikes[songID];
+    });
+
+    // add to likes div
+    const likesDiv = card.querySelector(".likes");
+    likesDiv.appendChild(likeCounter);
+    likesDiv.appendChild(likeBtn);
+    
     // add a close handler to the button to remove the card from the DOM
-    const closeButton = card.lastChild;
+    const closeBtn = card.lastChild;
     const playlist = getElID("playlistContainer");
-    closeButton.addEventListener("click", () => {
+    closeBtn.addEventListener("click", () => {
         playlist.removeChild(card);
     });
     
     // append card to the playlist
     playlist.appendChild(card);
+
+    // increment number of songs
+    idCounter++;
 }
 
 /**

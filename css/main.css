@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 2 Jul 2024, 8:14:04 PM
+ *  Last update: 2 Jul 2024, 8:38:09 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -184,6 +184,22 @@ label.invalid::after {
     color: #0A0927;
 
     background-color: white;
+}
+
+.card > .song-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card .likes {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.card .like-icon {
+    height: 20px;
 }
 
 .card > .card-close {
