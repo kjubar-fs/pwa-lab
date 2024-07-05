@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 4 Jul 2024, 12:15:34 PM
+ *  Last update: 5 Jul 2024, 1:56:55 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -13,17 +13,19 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
 }
 
-// TODO: add offline mode detection to display a message and disable the form,
-//       and check when we return online to refresh the list
+// run initial online/offline setup
+if (!navigator.onLine) {
+    goOffline();
+} else {
+    goOnline();
+}
 
-// setup Firebase connections
-initFirebaseAndDB();
-
-// get the initial song list
-// TODO: make the list refresh reactively to any DB changes,
-//       regardless of where they come from (this app or outside)
-songDB.getAll().then(displaySongs).catch((err) => {
-    displayError("Error getting song list:", err);
+// add handlers for network status change to enable/disable app
+window.addEventListener("offline", () => {
+    goOffline();
+});
+window.addEventListener("online", () => {
+    goOnline();
 });
 
 // create and attach click handler for submit button
@@ -187,9 +189,25 @@ function createSongCard(id, title, artist, likes) {
  * @param {any[]} songList list of songs to display
  */
 function displaySongs(songList) {
+    getElID("playlistContainer").innerHTML = "";
+
+    if (!songList || songList.length === 0) {
+        return;
+    }
+
     for (let song of songList) {
         createSongCard(song.id, song.title, song.artist, song.likes);
     }
+}
+
+/**
+ * Enables or disables the form controls
+ * @param {boolean} enabled whether or not to enable the form
+ */
+function setFormEnabled(enabled) {
+    getElID("songName").disabled = !enabled;
+    getElID("artistName").disabled = !enabled;
+    getElID("addSong").disabled = !enabled;
 }
 
 /**
@@ -202,6 +220,25 @@ function getElID(id) {
     return document.getElementById(id);
 }
 
+/**
+ * Set up the app for usage
+ * Run this every time the app comes online
+ */
+function setupApp() {
+    // setup Firebase connections
+    initFirebaseAndDB();
+    
+    // get the initial song list
+    // TODO: make the list refresh reactively to any DB changes,
+    //       regardless of where they come from (this app or outside)
+    songDB.getAll().then(displaySongs).catch((err) => {
+        displayError("Error getting song list:", err);
+    });
+}
+
+/**
+ * Create a Firebase connection and initialize the database
+ */
 function initFirebaseAndDB() {
     // initialize Firebase
     let app;
@@ -223,10 +260,41 @@ function initFirebaseAndDB() {
 
     // initialize DB
     songDB.open(app)
-        .then(() => { displayError(""); })
+        .then(() => {
+            displayError("");
+        })
         .catch((err) => {
             displayError("Error opening database:", err);
         });
+}
+
+/**
+ * Disable app functionality when going offline
+ */
+function goOffline() {
+    // disable the form and clear the playlist
+    setFormEnabled(false);
+    displaySongs();
+
+    // display an offline message
+    displayError("You're offline!", "Find the internet to continue.");
+
+    // close the DB connection
+    songDB.close();
+}
+
+/**
+ * Enable app functionality when going online
+ */
+function goOnline() {
+    // reestablish Firebase connection and DB
+    setupApp();
+
+    // enable the form and clear the offline message
+    setFormEnabled(true);
+    displayError("");
+
+    // TODO: add a toast for connection coming online
 }
 
 /**

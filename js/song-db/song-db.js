@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 4 Jul 2024, 9:30:51 AM
- *  Last update: 4 Jul 2024, 11:50:08 AM
+ *  Last update: 5 Jul 2024, 1:44:11 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import {
@@ -37,6 +37,19 @@ class SongDB {
             } catch(err) {
                 reject(err);
             }
+        });
+    }
+
+    /**
+     * Close the database
+     * Used when the app is going offline to disable connection
+     * @returns a Promise indicating if the operation was successful (which it always will be)
+     */
+    close() {
+        return new Promise((resolve, _reject) => {
+            this.db = null;
+            this.isAvailable = false;
+            resolve();
         });
     }
 
