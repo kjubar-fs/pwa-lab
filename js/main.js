@@ -1,13 +1,14 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 15 Jul 2024, 2:21:10 PM
+ *  Last update: 15 Jul 2024, 2:38:01 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import songDB from "./song-db/song-db.js";
 import { enableNav } from "./nav.js";
+import { getElID, displayError } from "./util.js";
 
 // register the service worker
 if ("serviceWorker" in navigator) {
@@ -214,16 +215,6 @@ function setFormEnabled(enabled) {
 }
 
 /**
- * Given the ID of a DOM element, find that element
- * Wrapper for getElementById to make code less verbose
- * @param {string} id element ID to search for
- * @returns an Element reference found in the DOM, or null if not found
- */
-function getElID(id) {
-    return document.getElementById(id);
-}
-
-/**
  * Set up the app for usage
  * Run this every time the app comes online
  */
@@ -298,20 +289,4 @@ function goOnline() {
     displayError("");
 
     // TODO: add a toast for connection coming online
-}
-
-/**
- * Show an error on the page, or hide the display if an empty title is provided
- * @param {(string | null)} title Error title, or ""/null to hide
- * @param {(string | null)} errMsg Error to display
- */
-function displayError(title, errMsg) {
-    const errorsElem = getElID("errors");
-    if (title) {
-        getElID("errTitle").innerText = title;
-        getElID("errMsg").innerText = errMsg;
-        errorsElem.classList.remove("hidden");
-    } else {
-        errorsElem.classList.add("hidden");
-    }
 }
