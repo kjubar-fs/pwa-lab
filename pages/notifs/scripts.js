@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 15 Jul 2024, 2:17:09 PM
- *  Last update: 15 Jul 2024, 5:35:10 PM
+ *  Last update: 15 Jul 2024, 6:10:49 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { enableNav } from "../../js/nav.js";
@@ -92,7 +92,6 @@ function showNotif(event) {
     // check if input is valid
     let hasError = false;
     const titleLabel = getElID("notifTitleLabel");
-    const descLabel = getElID("notifDescLabel");
     if (!title) {
         // set flag
         hasError = true;
@@ -103,18 +102,38 @@ function showNotif(event) {
         // clear the error
         titleLabel.classList.remove("invalid");
     }
-    if (!desc) {
-        // set flag
-        hasError = true;
-
-        // show error about artist
-        descLabel.classList.add("invalid");
-    } else {
-        // clear the error
-        descLabel.classList.remove("invalid");
-    }
     if (hasError) return;
 
-    console.log(title, ", ", desc);
+    // sanity check for permissions and service worker
+    if (Notification.permission !== "granted") {
+        displayError("Unable to show notification:", "Notifications have been disabled for this site. Change permissions for this website to use this feature.");
+        return;
+    }
+    
+    if (!("serviceWorker" in navigator)) {
+        displayError("Unable to show notification:", "Service workers are not supported in this browser.");
+        return;
+    }
+
+    // have the service worker send a notification
+    navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification(title, {
+            body: desc,
+
+            badge: "/images/icons/android-chrome-192x192.png",
+            icon: "/images/icons/android-chrome-192x192.png",
+
+            actions: [
+                {
+                    action: "jamagree",
+                    title: "Agree",
+                },
+                {
+                    action: "jamdisagree",
+                    title: "Disagree",
+                }
+            ],
+        });
+    });
 }
 getElID("showNotif").addEventListener("click", showNotif);
