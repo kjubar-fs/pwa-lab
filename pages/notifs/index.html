@@ -2,7 +2,7 @@
 <!--
  Author: Kaleb Jubar
  Created: 23 May 2024, 5:06:56 PM
- Last update: 15 Jul 2024, 2:38:14 PM
+ Last update: 15 Jul 2024, 2:58:16 PM
  Copyright (c) 2024 Kaleb Jubar
 -->
 <html lang="en">
@@ -48,7 +48,20 @@
             <p id="errMsg"></p>
         </div>
         <main>
-            <h2>Notifications</h2>
+            <div id="notifSection">
+                <h2>Notifications</h2>
+                <form autocomplete="off" novalidate method="post">
+                    <input id="allowNotifs" type="button" value="Send Notifications">
+
+                    <label id="notifTitleLabel" for="notifTitle" data-error="Title is required">Title</label>
+                    <input id="notifTitle" name="notifTitle" required>
+
+                    <label id="notifDescLabel" for="notifDesc" data-error="Description is required">Description</label>
+                    <input id="notifDesc" name="notifDesc" required>
+
+                    <input id="showNotif" type="submit" value="Show">
+                </form>
+            </div>
         </main>
         <footer>
             <p>&copy; 2024 - Kaleb Jubar</p>
