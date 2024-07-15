@@ -2,7 +2,7 @@
 <!--
  Author: Kaleb Jubar
  Created: 23 May 2024, 5:06:56 PM
- Last update: 15 Jul 2024, 3:34:32 PM
+ Last update: 15 Jul 2024, 5:01:27 PM
  Copyright (c) 2024 Kaleb Jubar
 -->
 <html lang="en">
@@ -53,13 +53,15 @@
                 <form autocomplete="off" novalidate method="post">
                     <input id="allowNotifs" type="button" value="Send Notifications">
 
-                    <label id="notifTitleLabel" for="notifTitle" data-error="Title is required">Title</label>
-                    <input id="notifTitle" name="notifTitle" required>
+                    <div id="notifForm" class="hidden">
+                        <label id="notifTitleLabel" for="notifTitle" data-error="Title is required">Title</label>
+                        <input id="notifTitle" name="notifTitle" required>
 
-                    <label id="notifDescLabel" for="notifDesc" data-error="Description is required">Description</label>
-                    <input id="notifDesc" name="notifDesc" required>
+                        <label id="notifDescLabel" for="notifDesc" data-error="Description is required">Description</label>
+                        <input id="notifDesc" name="notifDesc" required>
 
-                    <input id="showNotif" type="submit" value="Show">
+                        <input id="showNotif" type="submit" value="Show">
+                    </div>
                 </form>
             </div>
         </main>
