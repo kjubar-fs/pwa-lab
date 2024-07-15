@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 15 Jul 2024, 2:59:37 PM
+ *  Last update: 15 Jul 2024, 3:58:20 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -59,7 +59,7 @@ header {
     padding: 40px 0 20px 0;
 }
 
-#errors {
+#messages {
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -76,8 +76,11 @@ header {
     background-color: white;
 }
 
-#errTitle {
+#msgTitle {
     font-weight: bold;
+}
+
+#messages.error > #msgTitle {
     color: var(--error);
 }
 

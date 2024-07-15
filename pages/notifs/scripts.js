@@ -1,14 +1,24 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 15 Jul 2024, 2:17:09 PM
- *  Last update: 15 Jul 2024, 2:50:46 PM
+ *  Last update: 15 Jul 2024, 3:58:51 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { enableNav } from "../../js/nav.js";
 import { getElID } from "../../js/util.js";
 
+if (!("Notification" in window)) {
+    
+}
+
 enableNav();
 
+/**
+ * Retrieve the user's notification information from the form, validate it,
+ * show errors if invalid, or send a notification to the user if valid
+ * 
+ * @param {MouseEvent} event click event from DOM
+ */
 function showNotif(event) {
     // prevent refreshing the page
     event.preventDefault();

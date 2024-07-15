@@ -1,14 +1,14 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 15 Jul 2024, 2:38:01 PM
+ *  Last update: 15 Jul 2024, 3:57:31 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import songDB from "./song-db/song-db.js";
 import { enableNav } from "./nav.js";
-import { getElID, displayError } from "./util.js";
+import { getElID, displayError, clearMessage } from "./util.js";
 
 // register the service worker
 if ("serviceWorker" in navigator) {
@@ -91,7 +91,7 @@ function addSong(event) {
         }
 
         // clear errors
-        displayError("");
+        clearMessage();
     }).catch((err) => {
         displayError("Error adding song:", err);
     });
@@ -155,7 +155,7 @@ function createSongCard(id, title, artist, likes) {
             likeCounter.innerText = curLikes;
 
             // hide any errors
-            displayError("");
+            clearMessage();
         }).catch((err) => {
             displayError("Error liking song:", err);
         });
@@ -177,7 +177,7 @@ function createSongCard(id, title, artist, likes) {
                 playlist.removeChild(card);
 
                 // hide any errors
-                displayError("");
+                clearMessage();
             }).catch((err) => {
                 displayError(`Error deleting ${title}:`, err);
             });
@@ -246,7 +246,7 @@ function initFirebaseAndDB() {
             appId: "1:166483613685:web:ecd87a7e7f7fc2ff5f72bc"
         };
         app = initializeApp(firebaseConfig);
-        displayError("");
+        clearMessage();
     } catch(err) {
         displayError("Error connecting to Firebase:", err);
         return;
@@ -255,7 +255,7 @@ function initFirebaseAndDB() {
     // initialize DB
     songDB.open(app)
         .then(() => {
-            displayError("");
+            clearMessage();
         })
         .catch((err) => {
             displayError("Error opening database:", err);
@@ -286,7 +286,7 @@ function goOnline() {
 
     // enable the form and clear the offline message
     setFormEnabled(true);
-    displayError("");
+    clearMessage();
 
     // TODO: add a toast for connection coming online
 }
