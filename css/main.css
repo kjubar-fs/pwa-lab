@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:00 PM
- *  Last update: 4 Jul 2024, 12:03:15 PM
+ *  Last update: 15 Jul 2024, 2:25:11 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -266,6 +266,47 @@ button.card-close {
     font-size: 0.9em;
 
     background: none;
+}
+
+/* navigation */
+#navDrawer {
+    position: absolute;
+    top: -120px;
+    width: 100%;
+    height: 120px;
+
+    transition: all 500ms;
+}
+
+#navDrawer.open {
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+#navDrawer > .nav-link-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.nav-link > a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav-link > a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+#navBurger {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    height: 35px;
+
+    cursor: pointer;
 }
 
 /*** desktop-specific styles ***/

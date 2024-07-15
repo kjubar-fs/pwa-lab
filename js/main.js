@@ -1,12 +1,13 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 23 May 2024, 5:07:07 PM
- *  Last update: 5 Jul 2024, 1:56:55 PM
+ *  Last update: 15 Jul 2024, 2:21:10 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import songDB from "./song-db/song-db.js";
+import { enableNav } from "./nav.js";
 
 // register the service worker
 if ("serviceWorker" in navigator) {
@@ -27,6 +28,8 @@ window.addEventListener("offline", () => {
 window.addEventListener("online", () => {
     goOnline();
 });
+
+enableNav();
 
 // create and attach click handler for submit button
 /**
