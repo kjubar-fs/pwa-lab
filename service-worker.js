@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 5 Jun 2024, 1:24:13 PM
- *  Last update: 15 Jul 2024, 6:25:56 PM
+ *  Last update: 16 Jul 2024, 1:00:28 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 const version = "1"
@@ -104,9 +104,9 @@ self.addEventListener("notificationclick", (event) => {
     const action = event.action;
     
     if (action === "jamagree") {
-        sendMessage("Agreed");
+        sendMessage("So we both agree on that!");
     } else if (action === "jamdisagree") {
-        sendMessage("Disagreed");
+        sendMessage("Let's agree to disagree.");
     }
 });
 

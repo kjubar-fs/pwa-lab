@@ -1,11 +1,11 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 15 Jul 2024, 2:17:09 PM
- *  Last update: 15 Jul 2024, 6:21:16 PM
+ *  Last update: 16 Jul 2024, 1:03:08 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { enableNav } from "../../js/nav.js";
-import { clearMessage, displayError, getElID } from "../../js/util.js";
+import { clearMessage, displayError, displayMessage, getElID } from "../../js/util.js";
 
 if (!("Notification" in window)) {
     // notifications not supported
@@ -143,6 +143,6 @@ function showNotif(event) {
 getElID("showNotif").addEventListener("click", showNotif);
 
 // add listener for messages from the service worker
-navigator.serviceWorker.addEventListener('message', (message) => {
-    console.log('Received message:', message);
+navigator.serviceWorker.addEventListener('message', (event) => {
+    displayMessage("Message from SW:", event.data);
 });
