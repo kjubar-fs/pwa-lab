@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 15 Jul 2024, 2:36:24 PM
- *  Last update: 15 Jul 2024, 3:54:37 PM
+ *  Last update: 15 Jul 2024, 6:26:12 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 
@@ -45,7 +45,6 @@ export function clearMessage() {
  * @param {(string | null)} msg message to display
  */
 function displayMessageInternal(type, title, msg) {
-    console.log("showing message: ", type, title, msg);
     const msgElem = getElID("messages");
 
     // clear message if necessary

@@ -1,7 +1,7 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 5 Jun 2024, 1:24:13 PM
- *  Last update: 4 Jul 2024, 11:17:53 AM
+ *  Last update: 15 Jul 2024, 6:25:56 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 const version = "1"
@@ -95,3 +95,32 @@ self.addEventListener("fetch", (event) => {
         event.respondWith(fetch(event.request));
     }
 });
+
+/**
+ * On Notification clicked event.
+ * Sends response messages to clients based on the selected option.
+ */
+self.addEventListener("notificationclick", (event) => {
+    const action = event.action;
+    
+    if (action === "jamagree") {
+        sendMessage("Agreed");
+    } else if (action === "jamdisagree") {
+        sendMessage("Disagreed");
+    }
+});
+
+/**
+ * Send a message from this service worker to all controlled clients.
+ * @param {any} msg message to send to clients
+ */
+function sendMessage(msg) {
+    clients.matchAll({ type: "all" })
+        .then((matchedClients) => {
+            matchedClients.forEach((client) => {
+                // Do whatever is needed with the client,
+                // including posting a message.
+                client.postMessage(msg);
+            });
+        });
+}

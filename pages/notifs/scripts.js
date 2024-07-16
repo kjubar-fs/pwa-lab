@@ -1,11 +1,11 @@
 /*
  *  Author: Kaleb Jubar
  *  Created: 15 Jul 2024, 2:17:09 PM
- *  Last update: 15 Jul 2024, 6:10:49 PM
+ *  Last update: 15 Jul 2024, 6:21:16 PM
  *  Copyright (c) 2024 Kaleb Jubar
  */
 import { enableNav } from "../../js/nav.js";
-import { displayError, getElID } from "../../js/util.js";
+import { clearMessage, displayError, getElID } from "../../js/util.js";
 
 if (!("Notification" in window)) {
     // notifications not supported
@@ -115,6 +115,9 @@ function showNotif(event) {
         return;
     }
 
+    // hide any messages
+    clearMessage();
+
     // have the service worker send a notification
     navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification(title, {
@@ -122,6 +125,7 @@ function showNotif(event) {
 
             badge: "/images/icons/android-chrome-192x192.png",
             icon: "/images/icons/android-chrome-192x192.png",
+            image: "/images/icons/android-chrome-192x192.png",
 
             actions: [
                 {
@@ -137,3 +141,8 @@ function showNotif(event) {
     });
 }
 getElID("showNotif").addEventListener("click", showNotif);
+
+// add listener for messages from the service worker
+navigator.serviceWorker.addEventListener('message', (message) => {
+    console.log('Received message:', message);
+});
